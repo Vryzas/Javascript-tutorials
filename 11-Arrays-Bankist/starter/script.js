@@ -122,6 +122,7 @@ const upDateUI = function (acc) {
 
 // event handlers
 let currentAccount;
+
 //Login function
 btnLogin.addEventListener('click', function (e) {
   e.preventDefault();
@@ -165,6 +166,21 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+//loan request function
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    //add movement
+    currentAccount.movements.push(amount);
+    //update UI
+    upDateUI(currentAccount);
+  }
+  //clear field
+  inputLoanAmount.value = '';
+});
+
 //close account function
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
@@ -196,6 +212,28 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+// //////SOME method
+// console.log(movements);
+
+// //equality
+// console.log(movements.includes(-130));
+
+// //condition .some(value, index, array)
+// console.log(movements.some(mov => mov === -130));
+
+// const anyDeposits = movements.some(mov => mov > 0);
+// console.log(anyDeposits);
+
+// /////EVERY method .every(value, index, array)
+// console.log(movements.every(mov => mov > 0));
+// console.log(account4.movements.every(mov => mov > 0)); //true
+
+// //separate callback
+// const deposit = mov => mov > 0;
+// console.log(movements.some(deposit));
+// console.log(movements.every(deposit));
+// console.log(movements.filter(deposit));
 
 //FIND only returns the first element in the condition
 // const firstWithdrawal = movements.find(mov => mov < 0);
