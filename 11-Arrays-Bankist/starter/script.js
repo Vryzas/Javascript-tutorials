@@ -74,7 +74,7 @@ const displayMovements = function (movements, sort = false) {
                     <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-                    <div class="movements__value">${mov}</div>
+                    <div class="movements__value">${mov}€</div>
                   </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -229,6 +229,43 @@ const currencies = new Map([
 ]);
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+/////////////////////
+
+// /////////---PROGRAMATICALY FILLING ARRAYS
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// //empty arrays + filling method
+// const x = new Array(7);
+// console.log(x);
+// console.log(x.map(() => 5));
+// x.fill(1, 3, 5); //fills array with 1's from index >=3 to <5
+// console.log(x);
+
+// arr.fill(23, 2, 6);
+// console.log(arr);
+
+// //array.from
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+// const z = Array.from({ length: 7 }, (_, i) => i + 1);
+// console.log(z);
+
+// const diceRolls = Array.from({ length: 100 }, () =>
+//   Math.floor(Math.random() * 6 + 1)
+// );
+// console.log(diceRolls);
+
+// labelBalance.addEventListener('click', function () {
+//   const movementUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     el => el.textContent.replace('€', '')
+//   );
+//   console.log(movementUI);
+//   const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+//   console.log(movementsUI2.map(el => el.textContent.replace('€', '')));
+// });
 
 // //////////////ARRAY SORTING
 // //Strings
