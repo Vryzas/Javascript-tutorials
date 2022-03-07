@@ -81,19 +81,28 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const date = new Date(acc.movementsDates[i]);
+    const day = `${date.getDate()}`.padStart(2, 0);
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const year = date.getFullYear();
+    const displayDate = `${day}/${month}/${year}`;
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+        <div class="movements__date">${displayDate}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +151,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -171,6 +180,15 @@ btnLogin.addEventListener('click', function (e) {
     }`;
     containerApp.style.opacity = 100;
 
+    //create current date/time
+    const today = new Date();
+    const day = `${today.getDate()}`.padStart(2, 0);
+    const month = `${today.getMonth() + 1}`.padStart(2, 0);
+    const year = today.getFullYear();
+    const hour = today.getHours();
+    const minutes = `${today.getMinutes()}`.padStart(2, 0);
+    labelDate.textContent = `${day}/${month}/${year}, ${hour}:${minutes}`;
+
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
@@ -197,7 +215,9 @@ btnTransfer.addEventListener('click', function (e) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
-
+    // Add transfer date
+    currentAccount.movementsDates.push(new Date());
+    receiverAcc.movementsDates.push(new Date());
     // Update UI
     updateUI(currentAccount);
   }
@@ -212,6 +232,8 @@ btnLoan.addEventListener('click', function (e) {
     // Add movement
     currentAccount.movements.push(amount);
 
+    // Add loan date
+    currentAccount.movementsDates.push(new Date());
     // Update UI
     updateUI(currentAccount);
   }
@@ -244,7 +266,7 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
 
