@@ -230,6 +230,91 @@ const currencies = new Map([
 
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
+// Code challenge 4
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] },
+];
+
+//.1
+const recommendedFood = weight => weight ** 0.75 * 28;
+dogs.forEach(function (dog) {
+  dog.recFood = Number(recommendedFood(dog.weight).toFixed(0));
+});
+console.log(...dogs);
+
+//.2
+let sarahDog;
+dogs.forEach(function (dog) {
+  dog.owners.forEach(owner => {
+    if (owner === 'Sarah') sarahDog = dog;
+  });
+});
+if (sarahDog.curFood > sarahDog.recFood) {
+  console.log(`Sarah's dog is eating too much`);
+} else {
+  console.log(`Sarah's dog is eating too litle`);
+}
+
+//.3
+const ownersEatTooMuch = [];
+const ownersEatTooLittle = [];
+dogs.forEach(function (dog) {
+  if (dog.curFood < dog.recFood) {
+    ownersEatTooLittle.push(...dog.owners);
+  } else if (dog.curFood > dog.recFood) {
+    ownersEatTooMuch.push(...dog.owners);
+  }
+});
+
+//.4
+let strTooMuch = ownersEatTooMuch[0];
+ownersEatTooMuch
+  .slice(1)
+  .forEach(owner => (strTooMuch = strTooMuch + ' and ' + owner));
+let strTooLittle = ownersEatTooLittle[0];
+ownersEatTooLittle
+  .slice(1)
+  .forEach(owner => (strTooLittle = strTooLittle + ' and ' + owner));
+console.log(`${strTooMuch}'s dogs eat too much!`);
+console.log(`${strTooLittle}'s dogs eat too little!`);
+
+//.5
+let dogExact;
+dogs.find(dog => (dogExact = dog.curFood === dog.recFood));
+console.log(dogExact);
+
+//.6
+let dogOkay;
+dogs.find(
+  dog =>
+    (dogOkay =
+      dog.curFood <= dog.recFood + dog.recFood * 0.1 &&
+      dog.curFood >= dog.recFood - dog.recFood * 0.1)
+);
+console.log(dogOkay);
+
+//.7
+const okayFood = [];
+dogs.forEach(dog => {
+  if (
+    dog.curFood <= dog.recFood + dog.recFood * 0.1 &&
+    dog.curFood >= dog.recFood - dog.recFood * 0.1
+  )
+    okayFood.push(dog);
+});
+console.log(okayFood);
+
+//.8
+console.log(
+  dogs.slice().sort((a, b) => {
+    if (a.recFood > b.recFood) return 1;
+    if (b.recFood > a.recFood) return -1;
+  })
+);
+
 // /////////////////////
 // ///ARRAY method practice
 // // .1
