@@ -383,3 +383,38 @@ console.log(huge + ` is REALLY big!!!`);
 // divisions
 console.log(11n / 3n);
 console.log(11 / 3);
+
+//DATES and TIME fundamentals
+//Create a date
+const now = new Date();
+console.log(now);
+
+console.log(new Date('April 24 2022 20:10:30'));
+console.log(new Date('December 24, 2015'));
+console.log(new Date(account1.movementsDates[0]));
+//year, month(starts at 0), day, h, m, s......
+console.log(new Date(2037, 10, 19, 15, 23, 5));
+//auto corrects day (31/02/2037 = 03/03/2037)
+console.log(new Date(2037, 1, 31));
+//0 miliseconds after UNIX time(?)
+console.log(new Date(0));
+//days * hours * minutes * seconds * miliseconds
+console.log(new Date(3 * 24 * 60 * 60 * 1000));
+
+//working with dates
+const future = new Date(2037, 10, 19, 15, 23);
+console.log(future);
+console.log(future.getFullYear());
+console.log(future.getMonth()); //REMEMBER it's 0 based
+console.log(future.getDate()); //day
+console.log(future.getDay()); //day of the week sun = 0
+console.log(future.getHours());
+console.log(future.getMinutes());
+console.log(future.getSeconds());
+console.log(future.toISOString());
+console.log(future.getTime()); //miliseconds since 01/01/1970
+
+console.log(new Date(2142256980000));
+console.log(Date.now());
+future.setFullYear(2040);
+console.log(future);
