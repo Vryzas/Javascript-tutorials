@@ -355,3 +355,31 @@ console.log(PI);
 
 console.log(Number('230_000')); //NaN
 console.log(Number.parseInt('230_000'));
+
+// Big Int (introduced in ES2020) 4 nrs over 64bit
+console.log(2 ** 53 - 1);
+console.log(Number.MAX_SAFE_INTEGER);
+console.log(2 ** 53 + 5); //wrong nr
+console.log(2 ** 53 + 4); //wrong nr
+// error (1111e+11)
+console.log(9823749283742983472938457945769823745);
+// convertions to Big Int
+console.log(9823749283742983472938457945769823745n);
+console.log(BigInt(12398876));
+// operations
+console.log(10000n + 10000n);
+console.log(982347928347239847293847098n + 1000000n);
+const huge = 982347928347239847293847098n;
+const num = 23;
+// must convert regular nr to big int or error
+console.log(huge * BigInt(num));
+// does not work with triple operator in comparissons
+console.log(20n > 15);
+console.log(20n === 20);
+console.log(typeof 20n);
+// works with double operator
+console.log(20n == 20);
+console.log(huge + ` is REALLY big!!!`);
+// divisions
+console.log(11n / 3n);
+console.log(11 / 3);
