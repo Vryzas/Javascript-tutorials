@@ -149,12 +149,20 @@ const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${formatCur(incomes, acc.locale, acc.currency)}`;
+  labelSumIn.textContent = `${formatCur(
+    Math.abs(incomes), // correction, no negatives
+    acc.locale,
+    acc.currency
+  )}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${formatCur(out, acc.locale, acc.currency)}`;
+  labelSumOut.textContent = `${formatCur(
+    Math.abs(out), // correction, no negatives
+    acc.locale,
+    acc.currency
+  )}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -193,13 +201,38 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const startLogoutTimer = function () {
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+    // print timer on each call
+    labelTimer.textContent = `${min}:${sec}`;
+
+    // logout user on timeout (0 seconds)
+    if (time === 0) {
+      clearInterval(timer);
+      labelWelcome.textContent = `Log in to get started`;
+      containerApp.style.opacity = 0;
+    }
+    //decrease 1s
+    time--;
+  };
+  //set time to 5 minutes
+  let time = 300;
+  //call timer every second
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
-//fake permanent login
-currentAccount = account1;
-updateUI(currentAccount);
-containerApp.style.opacity = 100;
+let currentAccount, timer;
+// //fake permanent login
+// currentAccount = account1;
+// updateUI(currentAccount);
+// containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', function (e) {
   // Prevent form from submitting
@@ -245,6 +278,9 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
+    // call&clear login timer
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
     // Update UI
     updateUI(currentAccount);
   }
@@ -272,6 +308,9 @@ btnTransfer.addEventListener('click', function (e) {
     receiverAcc.movementsDates.push(new Date());
     // Update UI
     updateUI(currentAccount);
+    // Reset the timer
+    clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -289,6 +328,10 @@ btnLoan.addEventListener('click', function (e) {
       currentAccount.movementsDates.push(new Date());
       // Update UI
       updateUI(currentAccount);
+
+      // Reset the timer
+      clearInterval(timer);
+      timer = startLogoutTimer();
     }, 2500);
   }
   inputLoanAmount.value = '';
@@ -536,3 +579,12 @@ const pizzaTimer = setTimeout(
 console.log(`Waiting...`);
 
 if (ings.includes('spinach')) clearTimeout(pizzaTimer);
+
+// setInterval - runs every determined time interval
+setInterval(function () {
+  const now = new Date();
+  const hour =
+    `${now.getHours()}:${now.getMinutes()}:` +
+    `${now.getSeconds()}`.padStart(2, 0);
+  console.log(hour);
+}, 10000); //log current hour every 10 second
