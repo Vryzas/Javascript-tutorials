@@ -440,3 +440,12 @@ console.log(new Date(2142256980000));
 console.log(Date.now());
 future.setFullYear(2040);
 console.log(future);
+
+//Operations with Date
+console.log(+future); //will return a number (miliseconds since 01/01/1970)
+
+const calcDaysGone = (date1, date2) =>
+  Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)); //returns nr*miliseconds*seconds*minutes*days
+//4 particularities (ie: day lights savings date with standart date) use a library like moment.js
+const days1 = calcDaysGone(new Date(2037, 3, 4), new Date(2037, 3, 14));
+console.log(days1);
