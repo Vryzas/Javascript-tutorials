@@ -98,6 +98,13 @@ const formatMovementDate = function (date, locale) {
   }
 };
 
+const formatCur = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -117,7 +124,11 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${formatCur(
+          mov,
+          acc.locale,
+          acc.currency
+        )}</div>
       </div>
     `;
 
@@ -127,19 +138,23 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  labelBalance.textContent = `${formatCur(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = `${formatCur(incomes, acc.locale, acc.currency)}`;
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = `${formatCur(out, acc.locale, acc.currency)}`;
 
   const interest = acc.movements
     .filter(mov => mov > 0)
@@ -149,7 +164,11 @@ const calcDisplaySummary = function (acc) {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = `${formatCur(
+    interest,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
 const createUsernames = function (accs) {
@@ -482,3 +501,22 @@ const calcDaysGone = (date1, date2) =>
 //4 particularities (ie: day lights savings date with standart date) use a library like moment.js
 const days1 = calcDaysGone(new Date(2037, 3, 4), new Date(2037, 3, 14));
 console.log(days1);
+
+//ops with numbers
+const num2 = 3884764.23;
+
+const options1 = {
+  style: 'currency', //unit, percent or currency
+  unit: 'celsius',
+  currency: 'GBP',
+  //check docs in MDN for more options
+};
+
+console.log('US:     ', new Intl.NumberFormat('en-US', options1).format(num2));
+console.log('DE:     ', new Intl.NumberFormat('de-DE', options1).format(num2));
+console.log('SY:     ', new Intl.NumberFormat('ar-SY', options1).format(num2));
+console.log(
+  navigator.language,
+  ':     ',
+  new Intl.NumberFormat(navigator.language, options1).format(num2)
+);
