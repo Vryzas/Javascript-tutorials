@@ -118,3 +118,32 @@ logo.classList.add('c', 'j');
 logo.classList.remove('c', 'j');
 logo.classList.toggle('c');
 logo.classList.contains('c');
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  e.preventDefault();
+  const s1coords = section1.getBoundingClientRect();
+  console.log(s1coords);
+
+  console.log(e.target.getBoundingClientRect());
+
+  console.log(`Current scrool (X/Y)`, window.pageXOffset, pageYOffset); //scrollX, scrollY);
+  console.log(
+    `height/width viewport`,
+    document.documentElement.clientHeight,
+    document.documentElement.clientWidth
+  );
+
+  //Scrolling
+  // window.scrollTo(s1coords.left + scrollX, s1coords.top + scrollY);
+  window.scrollTo({
+    left: s1coords.left + scrollX,
+    top: s1coords.top + scrollY,
+    behavior: 'smooth',
+  });
+
+  //only modern browsers!!!
+  // section1.scrollIntoView({ behavior: 'smooth' });
+});
