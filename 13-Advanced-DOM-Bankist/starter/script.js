@@ -182,26 +182,51 @@ const colorChanger = function (ele) {
   }, 100);
 };
 
-document.querySelector('.nav__link').addEventListener('click', function (e) {
-  // colorChanger(e.currentTarget);
-  this.style.backgroundColor = randomColor();
-  console.log(`LINK`, e.target, e.currentTarget);
-  console.log(this === e.currentTarget);
-  // e.stopPropagation(); // stops the propagation of an event
-});
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   // colorChanger(e.currentTarget);
+//   this.style.backgroundColor = randomColor();
+//   console.log(`LINK`, e.target, e.currentTarget);
+//   console.log(this === e.currentTarget);
+//   // e.stopPropagation(); // stops the propagation of an event
+// });
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   // colorChanger(e.currentTarget);
+//   this.style.backgroundColor = randomColor();
+//   console.log(`CONTAINER`, e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav').addEventListener(
+//   'click',
+//   function (e) {
+//     // colorChanger(e.currentTarget);
+//     this.style.backgroundColor = randomColor();
+//     console.log(`NAV`, e.target, e.currentTarget);
+//   },
+//   true // captures the event while it travels down the parents elements
+// );
+// /\/\/\ EXAMPLE ONLY, COMENTED OUT /\/\/\
+
+//////////////PAGE NAVIGATION
+
+// EXAMPLE FUNCTION  \/\/\/
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//   el.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const id = this.getAttribute('href');
+//     if (id != '#')
+//       document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//     console.log(id);
+//   });
+// });
+// THIS FUNCTION IS NOT EFFICIENT /\/\/\
 
 document.querySelector('.nav__links').addEventListener('click', function (e) {
-  // colorChanger(e.currentTarget);
-  this.style.backgroundColor = randomColor();
-  console.log(`CONTAINER`, e.target, e.currentTarget);
+  e.preventDefault();
+  // matching strategy
+  if (e.target.classList.contains('nav__link')) {
+    const id = e.target.getAttribute('href');
+    if (id != '#')
+      document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
 });
-
-document.querySelector('.nav').addEventListener(
-  'click',
-  function (e) {
-    // colorChanger(e.currentTarget);
-    this.style.backgroundColor = randomColor();
-    console.log(`NAV`, e.target, e.currentTarget);
-  },
-  true // captures the event while it travels down the parents elements
-);
