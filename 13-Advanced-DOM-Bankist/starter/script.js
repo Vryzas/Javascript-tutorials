@@ -155,14 +155,53 @@ const h1 = document.querySelector('h1');
 const alertH1 = function (e) {
   alert('addEventListener: Great! You are reading the heading :D');
   // the action will happen only once
-  // h1.removeEventListener('mouseenter', alertH1);
+  h1.removeEventListener('mouseenter', alertH1);
 };
 //event listener with 'event' and action
 h1.addEventListener('mouseenter', alertH1);
 
 // time the action window
-setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 5000);
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 5000);
+
 // another to accomplish the same action on the same element
 // h1.onmouseenter = function (e) {
 //   alert('onmouseenter: Great! You are reading the heading :D');
 // };
+
+// event propagation and bubbling
+// rgb(255, 255, 255)
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+console.log(randomColor());
+
+const colorChanger = function (ele) {
+  setInterval(() => {
+    ele.style.backgroundColor = randomColor();
+  }, 100);
+};
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+  // colorChanger(e.currentTarget);
+  this.style.backgroundColor = randomColor();
+  console.log(`LINK`, e.target, e.currentTarget);
+  console.log(this === e.currentTarget);
+  // e.stopPropagation(); // stops the propagation of an event
+});
+
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  // colorChanger(e.currentTarget);
+  this.style.backgroundColor = randomColor();
+  console.log(`CONTAINER`, e.target, e.currentTarget);
+});
+
+document.querySelector('.nav').addEventListener(
+  'click',
+  function (e) {
+    // colorChanger(e.currentTarget);
+    this.style.backgroundColor = randomColor();
+    console.log(`NAV`, e.target, e.currentTarget);
+  },
+  true // captures the event while it travels down the parents elements
+);
