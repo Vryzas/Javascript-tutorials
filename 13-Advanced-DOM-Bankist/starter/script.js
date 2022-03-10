@@ -313,10 +313,28 @@ nav.addEventListener('mouseout', handleHover.bind(1));
 // Stick navigation bar
 
 // getting the section 1 pos relative to top
-const initialCoords = section1.getBoundingClientRect(); //section1 declared above
+// const initialCoords = section1.getBoundingClientRect(); //section1 declared above
 
-// the scroll event is not efficient and should be avoided
-window.addEventListener('scroll', function (e) {
-  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+// // the scroll event is not efficient and should be avoided
+// window.addEventListener('scroll', function (e) {
+//   if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+// Using Intersection Observer API
+// https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API
+
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver(stickyNav, {
+  root: null, // HTML element used as reference
+  threshold: 0, // percentage that has to intersect with the viewport to update
+  rootMargin: `-${navHeight}px`, // margin to the root until action is ex
 });
+headerObserver.observe(header); // header is defined above
