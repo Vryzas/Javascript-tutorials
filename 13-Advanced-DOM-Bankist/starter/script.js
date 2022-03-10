@@ -338,3 +338,23 @@ const headerObserver = new IntersectionObserver(stickyNav, {
   rootMargin: `-${navHeight}px`, // margin to the root until action is ex
 });
 headerObserver.observe(header); // header is defined above
+
+// Reveal elements on scroll
+
+const revealSection = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) return; //guard clause
+
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.targets);
+};
+
+const sectionObserver = new IntersectionObserver(revealSection, {
+  root: null,
+  threshold: 0.15,
+});
+
+allSections.forEach(function (section) {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
