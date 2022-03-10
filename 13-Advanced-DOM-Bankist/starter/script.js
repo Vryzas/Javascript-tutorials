@@ -283,3 +283,29 @@ tabsContainer.addEventListener('click', function (e) {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// Menu fade animation
+const nav = document.querySelector('.nav');
+
+const handleHover = function (e) {
+  // if the html element clas contains nav__link
+  if (e.target.classList.contains('nav__link')) {
+    // selects the nav__link class element
+    const link = e.target;
+    // goes to parent element and gets the siblings elements
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    // gets the logo too
+    const logo = link.closest('.nav').querySelector('img');
+    // decreases/increases the sibling elements opacity
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    // decreases/increases the logo's opacity
+    logo.style.opacity = this;
+  }
+};
+
+// when hovering the mouse on
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+// when hovering the mouse off
+nav.addEventListener('mouseout', handleHover.bind(1));
