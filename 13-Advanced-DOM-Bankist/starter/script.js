@@ -346,7 +346,7 @@ const revealSection = function (entries, observer) {
   if (!entry.isIntersecting) return; //guard clause
 
   entry.target.classList.remove('section--hidden');
-  observer.unobserve(entry.targets);
+  observer.unobserve(entry.target); // "target", not "targets"
 };
 
 const sectionObserver = new IntersectionObserver(revealSection, {
@@ -358,3 +358,28 @@ allSections.forEach(function (section) {
   sectionObserver.observe(section);
   section.classList.add('section--hidden');
 });
+
+//// Lazy loading imgs
+const imgTargets = document.querySelectorAll('img[data-src]');
+console.log(imgTargets);
+
+const loadImg = function (entries, observer) {
+  const [entry] = entries;
+  console.log(entry);
+  if (!entry.isIntersecting) return;
+
+  //replace tihe real img
+  entry.target.src = entry.target.dataset.src;
+  //img reveal
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+};
+
+const imgObserver = new IntersectionObserver(loadImg, {
+  root: null,
+  threshold: 0,
+  rootMargin: '+200px', // will lead to an early img load (b4 the user arrives at it)
+});
+
+imgTargets.forEach(img => imgObserver.observe(img));
