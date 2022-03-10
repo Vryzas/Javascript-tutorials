@@ -309,3 +309,14 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 // when hovering the mouse off
 nav.addEventListener('mouseout', handleHover.bind(1));
+
+// Stick navigation bar
+
+// getting the section 1 pos relative to top
+const initialCoords = section1.getBoundingClientRect(); //section1 declared above
+
+// the scroll event is not efficient and should be avoided
+window.addEventListener('scroll', function (e) {
+  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
