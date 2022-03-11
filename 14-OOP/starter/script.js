@@ -107,3 +107,37 @@ car1.brake();
 car1.brake();
 car1.brake();
 car1.brake();
+
+// ES6 classes
+
+class PersonCl {
+  //=== 2 const PersonCL = function(...){...}
+  constructor(firstName, birthyear) {
+    this.firstName = firstName;
+    this.birthYear = birthyear;
+  }
+  // Can declare methods INSIDE the class (prototype) but OUTSIDE the constructor
+  // the method will be added to the .prototype property
+  calcAge() {
+    console.log(2037 - this.birthYear);
+  }
+  // this is the same as the one below
+  /*greet() {
+      console.log(`Hey ${this.firstName}`);
+  } */
+}
+
+const jessica = new PersonCl('Jessica', 1996);
+console.log(jessica);
+jessica.calcAge();
+
+PersonCl.prototype.greet = function () {
+  console.log(`Hey ${this.firstName}`);
+};
+
+jessica.greet();
+
+// 1. Classes are not hoisted!!!
+// 2. Classes are first class citizens
+// 3. Classes are executed in strict mode
+// 4. Usage depends on each programmer
