@@ -12,6 +12,8 @@
     />
     <link rel="stylesheet" href="style.css" />
     <title>Bankist | When Banking meets Minimalist</title>
+    <script defer src="script.js"></script>
+    <!-- can use async in place of defer but it's not eficient with big scripts, defer is the best use case all around -->
   </head>
   <body>
     <header class="header">
@@ -353,7 +355,7 @@
       </form>
     </div>
     <div class="overlay hidden"></div>
-
-    <script src="script.js"></script>
+    <!--  without defer or async it is best to declare the script on the end, HTML will load it only after the html and improves the page load time-->
+    <!-- <script src="script.js"></script> -->
   </body>
 </html>

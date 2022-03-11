@@ -491,8 +491,10 @@ window.addEventListener('load', function (e) {
 });
 
 // displays a msg uppon leaving the page !DO NOT ABUSE!
-window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  console.log(e);
-  e.returnValue = '';
-});
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
+
+// Defer and async
