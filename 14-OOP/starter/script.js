@@ -51,3 +51,25 @@ console.log(vitor.species, matilda.species);
 console.log(vitor.hasOwnProperty('firstName')); //true
 // 'species' is a class atribute and not a obj atribute
 console.log(vitor.hasOwnProperty('species')); //false
+
+// Object.prototype (top of prototype chain)
+console.log(vitor.__proto__.__proto__); // Object proto
+console.log(vitor.__proto__.__proto__.__proto__); // null
+
+console.dir(Person.prototype.constructor);
+
+const arr = [3, 6, 4, 5, 6, 9, 3]; // new Array === []
+console.log(arr.__proto__);
+console.log(arr.__proto__ === Array.prototype); // true
+
+console.log(arr.__proto__.__proto__); // Object proto
+
+// Creating a new array method (may create errors with future versions or in multi dev teams)
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+console.log(arr.unique());
+
+const h1 = document.querySelector('h1');
+console.dir(h1.__proto__); // Prototype chain = HTMLElement => Element => Node => EventTarget => Object
+console.dir(x => x + 1); // fns ultimate prototype will always be obj
