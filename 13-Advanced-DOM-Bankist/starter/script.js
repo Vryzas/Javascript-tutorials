@@ -480,3 +480,19 @@ const slider = function () {
   });
 };
 slider();
+
+// DOM event lifecycle
+document.addEventListener('DOMContentLoaded', function (e) {
+  console.log(`HTML parsed and DOM tree built!`, e);
+});
+
+window.addEventListener('load', function (e) {
+  console.log(`Page fully loaded`, e);
+});
+
+// displays a msg uppon leaving the page !DO NOT ABUSE!
+window.addEventListener('beforeunload', function (e) {
+  e.preventDefault();
+  console.log(e);
+  e.returnValue = '';
+});
