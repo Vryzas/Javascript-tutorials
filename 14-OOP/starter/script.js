@@ -367,22 +367,25 @@ jay.calcAge();
 
 // Encapsulation using _ is conventioned
 class Account {
+  // Public fields (instances)
+  locale = navigator.language;
+  // Private fields
+  #movements = [];
+  #pin;
   constructor(owner, currency, pin) {
     this.owner = owner;
     this.currency = currency;
     // Protected proterty (add _)
-    this._pin = pin;
-    this._movements = [];
-    this.locale = navigator.language;
+    this.#pin = pin;
     console.log(`Thanks for opening an account, ${owner}`);
   }
 
-  // Public Interface
+  // Public Interface (or public methods)
   getMovements() {
-    return this._movements;
+    return this.#movements;
   }
   deposit(val) {
-    this._movements.push(val);
+    this.#movements.push(val);
   }
   withdrawal(val) {
     this.deposit(-val);
@@ -397,6 +400,13 @@ class Account {
       console.log(`Loan aproved`);
     }
   }
+  static helper() {
+    console.log(`Helper`);
+  }
+  // Private methods (not yet implementd by any browser)
+  // #approveLoan(val) {
+  //   return true;
+  // }
 }
 
 const acc1 = new Account('Jonas', 'EUR', 1111);
@@ -407,5 +417,10 @@ acc1.deposit(250);
 acc1.withdrawal(140);
 acc1.requestLoan(1000);
 console.log(acc1.getMovements());
-
 console.log(acc1);
+
+Account.helper();
+// real private fields (still on stage3) or class fields
+
+// Public fields/methods, Private fields/methods
+// console.log(acc1.#movements); // throws error
