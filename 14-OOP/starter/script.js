@@ -386,9 +386,11 @@ class Account {
   }
   deposit(val) {
     this.#movements.push(val);
+    return this;
   }
   withdrawal(val) {
     this.deposit(-val);
+    return this;
   }
   // protect the metho with the usage of the _
   _approveLoan(val) {
@@ -398,6 +400,7 @@ class Account {
     if (this._approveLoan(val)) {
       this.deposit(val);
       console.log(`Loan aproved`);
+      return this;
     }
   }
   static helper() {
@@ -424,3 +427,13 @@ Account.helper();
 
 // Public fields/methods, Private fields/methods
 // console.log(acc1.#movements); // throws error
+
+// Chaining methods
+acc1
+  .deposit(300)
+  .deposit(500)
+  .withdrawal(35)
+  .requestLoan(25000)
+  .withdrawal(4000); // the methods must return a value
+
+console.log(acc1.getMovements());
