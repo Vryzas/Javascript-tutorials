@@ -117,6 +117,8 @@ class PersonCl {
     this.birthYear = birthyear;
   }
   // Can declare methods INSIDE the class (prototype) but OUTSIDE the constructor
+
+  // Instance methods (available to any instance of the obj)
   // the method will be added to the .prototype property
   calcAge() {
     console.log(2037 - this.birthYear);
@@ -138,6 +140,11 @@ class PersonCl {
   }
   get fullName() {
     return this._fullName;
+  }
+  // Static method (only available to the class)
+  static hey() {
+    console.log(`Hey there....`);
+    console.log(this);
   }
 }
 
@@ -178,3 +185,13 @@ console.log(account.latest); // getter
 account.latest = 50; // setter
 
 console.log(account.movements);
+
+// Static methods
+
+Person.hey = function () {
+  console.log(`Hey there...`);
+  console.log(this);
+};
+Person.hey();
+
+PersonCl.hey();
