@@ -364,3 +364,48 @@ const jay = Object.create(StudentProto);
 jay.init('Jay', 2010, 'Computer Science');
 jay.introduce();
 jay.calcAge();
+
+// Encapsulation using _ is conventioned
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    // Protected proterty (add _)
+    this._pin = pin;
+    this._movements = [];
+    this.locale = navigator.language;
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+  // Public Interface
+  getMovements() {
+    return this._movements;
+  }
+  deposit(val) {
+    this._movements.push(val);
+  }
+  withdrawal(val) {
+    this.deposit(-val);
+  }
+  // protect the metho with the usage of the _
+  _approveLoan(val) {
+    return true;
+  }
+  requestLoan(val) {
+    if (this._approveLoan(val)) {
+      this.deposit(val);
+      console.log(`Loan aproved`);
+    }
+  }
+}
+
+const acc1 = new Account('Jonas', 'EUR', 1111);
+// acc1.movements.push(250);
+// acc1.movements.push(-140);
+
+acc1.deposit(250);
+acc1.withdrawal(140);
+acc1.requestLoan(1000);
+console.log(acc1.getMovements());
+
+console.log(acc1);
