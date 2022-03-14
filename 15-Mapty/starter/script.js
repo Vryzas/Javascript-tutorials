@@ -19,6 +19,17 @@ navigator.geolocation.getCurrentPosition(
     console.log(
       `https://www.google.pt/maps/@${latitude},${longitude},13.89z?hl=en-GB`
     );
+    const map = L.map('map').setView([latitude, longitude], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // L.marker([51.5, -0.09])
+    //   .addTo(map)
+    //   .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+    //   .openPopup();
   },
   function () {
     alert('Could not get your location');
