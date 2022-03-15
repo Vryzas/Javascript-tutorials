@@ -24,6 +24,7 @@ class Workout {
 }
 
 class Running extends Workout {
+  type = 'running';
   constructor(coords, distance, duration, cadence) {
     super(coords, distance, duration);
     this.cadence = cadence;
@@ -38,6 +39,7 @@ class Running extends Workout {
 }
 
 class Cycling extends Workout {
+  type = 'cycling';
   constructor(coords, distance, duration, elevationGain) {
     super(coords, distance, duration);
     this.elevationGain = elevationGain;
@@ -60,6 +62,7 @@ class Cycling extends Workout {
 class App {
   #map;
   #mapEvent;
+  #workouts = [];
 
   // empty constructor, no params needed
   constructor() {
@@ -113,17 +116,58 @@ class App {
   }
 
   _newWorkout(e) {
+    const validInputs = (...inputs) =>
+      inputs.every(inp => Number.isFinite(inp));
+    const allPositve = (...inputs) => inputs.every(inp => inp > 0);
     e.preventDefault();
+
+    // get data from form
+    const type = inputType.value;
+    const distance = +inputDistance.value; // "+" turns it into string
+    const duration = +inputDuration.value;
+    const { lat, lng } = this.#mapEvent.latlng;
+    let workout;
+
+    //  If workkout running create a running obj
+    if (type === 'running') {
+      const cadence = +inputCadence.value;
+      // Check if data  is valid
+      if (
+        !validInputs(distance, duration, cadence) ||
+        !allPositve(distance, duration, cadence)
+      )
+        return alert('Inputs must be positive Numbers');
+
+      workout = new Running([lat, lng], distance, duration, cadence);
+    }
+    // if workout cycling create a cycling obj
+    if (type === 'cycling') {
+      const elevation = +inputElevation.value;
+      // Check if data  is valid
+      if (
+        !validInputs(distance, duration, elevation) ||
+        !allPositve(distance, duration, elevation)
+      )
+        return alert('Inputs must be positive Numbers');
+
+      workout = new Cycling([lat, lng], distance, duration, elevation);
+    }
+    // Add new obj to the workout array
+    this.#workouts.push(workout);
+    // Render the workout array in the map as marker
+    this.renderWorkoutMarker(workout);
     // clear input fields
     inputDistance.value =
       inputDuration.value =
       inputCadence.value =
       inputElevation.value =
         '';
-    // Display marker
-    const { lat, lng } = this.#mapEvent.latlng;
+  }
+
+  // Display marker
+  renderWorkoutMarker(workout) {
     // adds marker to the map (css already defined)
-    L.marker([lat, lng])
+    L.marker(workout.coords)
       .addTo(this.#map)
       .bindPopup(
         L.popup({
@@ -131,10 +175,10 @@ class App {
           minWidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: 'running-popup',
+          className: `${workout.type}-popup`,
         })
       )
-      .setPopupContent('Workout')
+      .setPopupContent(workout.type)
       .openPopup();
   }
 }
