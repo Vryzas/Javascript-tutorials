@@ -81,6 +81,10 @@ class App {
   constructor() {
     this._getposition();
 
+    // get data from local storage
+    this._getLocalStorage();
+
+    //event handler
     form.addEventListener('submit', this._newWorkout.bind(this));
     // form change
     inputType.addEventListener('change', this._toggleElevationField);
@@ -104,11 +108,9 @@ class App {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
     const coords = [latitude, longitude];
-    console.log(
-      `https://www.google.pt/maps/@${latitude},${longitude},13.89z?hl=en-GB`
-    );
+
+    // render map
     this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
-    // console.log(map);
     // see 'leafleet' documentation for more info
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
       attribution:
@@ -117,6 +119,9 @@ class App {
 
     // Handling clicks on map
     this.#map.on('click', this._showForm.bind(this));
+
+    // render markers
+    this.#workouts.forEach(work => this._renderWorkoutMarker(work));
   }
 
   _showForm(mapE) {
@@ -188,6 +193,9 @@ class App {
     this._renderWorkout(workout);
     // hide form
     this._hideForm();
+
+    // set local storage to all workouts
+    this._setLocalStorage();
   }
 
   // Display marker
@@ -271,10 +279,25 @@ class App {
     }); // leafleet method, see documentation
 
     // using public interface
-    workout.click();
-    console.log(workout);
+    // workout.click();
+  }
+
+  _setLocalStorage() {
+    // local storage, only good 4 small amounts of data
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getLocalStorage() {
+    const data = JSON.parse(localStorage.getItem('workouts'));
+    if (!data) return;
+    this.#workouts = data;
+    this.#workouts.forEach(work => this._renderWorkout(work));
+  }
+
+  _reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }
 
 const app = new App(); // "creates" the app
-// app._getposition();
