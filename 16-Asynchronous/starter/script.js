@@ -128,7 +128,9 @@ const getCountryData = function (country) {
     });
 };
 
-getCountryData('portugal');
+btn.addEventListener('click', function () {
+  getCountryData('portugal');
+});
 
 // getCountryAndNeighbour('portugal');
 // getCountryAndNeighbour('usa');
