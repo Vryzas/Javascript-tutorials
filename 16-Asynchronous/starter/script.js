@@ -2,7 +2,7 @@
 
 // https://countries-api-836d.onrender.com/countries/
 
-const btn = document.querySelector('.btn-country');
+const btn = document.querySelectorAll('.btn-country');
 const countriesContainer = document.querySelector('.countries');
 
 const renderCountry = (data, className = '') => {
@@ -208,7 +208,14 @@ TEST COORDINATES 2: -33.933, 18.474
 
 GOOD LUCK 😀
 */
-btn.addEventListener('click', () => {
-  renderError('Not implemented yet!');
-  countriesContainer.style.opacity = 1;
+btn.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const param = btn.getAttribute('data.param');
+    whereAmI(param);
+    countriesContainer.style.opacity = 1;
+  });
 });
+
+const whereAmI = function (param) {
+  alert(`whereAmI has been pressed with the following params: ${param}`);
+};
