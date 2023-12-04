@@ -26,7 +26,7 @@ const renderCountry = (data, className = '') => {
   </article>
   `;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  // countriesContainer.style.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 
 const renderError = function (message) {
@@ -103,17 +103,17 @@ const renderError = function (message) {
 ///////////////////////////////////////
 // PROMISES
 
-// const getCountryData = function (country) {
-//   fetch(`https://restcountries.eu/rest/v2/name/${country}`)
-//     .then(function (response) {
-//       console.log(response);
-//       return response.json();
-//     })
-//     .then(function (data) {
-//       console.log(data);
-//       renderCountry(data[0]);
-//     });
-// };
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`)
+    .then(function (response) {
+      console.log(response);
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      renderCountry(data[0]);
+    });
+};
 
 ///////////////////////////////////////
 // ERROR HANDLERS
@@ -208,6 +208,8 @@ TEST COORDINATES 2: -33.933, 18.474
 
 GOOD LUCK 😀
 */
+// 544732385110882337100x120233
+
 btn.forEach(btn => {
   btn.addEventListener('click', () => {
     const param = btn.getAttribute('data.param');
@@ -216,6 +218,20 @@ btn.forEach(btn => {
   });
 });
 
-const whereAmI = function (param) {
-  alert(`whereAmI has been pressed with the following params: ${param}`);
+const whereAmI = async function (param) {
+  fetch(
+    `https://geocode.xyz/${param}?geoit=json&auth=544732385110882337100x120233`
+  )
+    .then(async response => {
+      const data = await response.json();
+      console.log(`You are in ${data.city}, ${data.country}.`);
+      return data;
+    })
+    .then(data => {
+      getCountryData(data.country);
+    })
+    .catch(err => {
+      console.error(err.message);
+      renderError('Something went wrong ' + err.message);
+    });
 };
