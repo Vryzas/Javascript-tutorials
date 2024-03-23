@@ -210,28 +210,79 @@ GOOD LUCK 😀
 */
 // 544732385110882337100x120233
 
-btn.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const param = btn.getAttribute('data.param');
-    whereAmI(param);
-    countriesContainer.style.opacity = 1;
-  });
-});
+// btn.forEach(btn => {
+//   btn.addEventListener('click', () => {
+//     const param = btn.getAttribute('data.param');
+//     whereAmI(param);
+//     countriesContainer.style.opacity = 1;
+//   });
+// });
 
-const whereAmI = async function (param) {
-  fetch(
-    `https://geocode.xyz/${param}?geoit=json&auth=544732385110882337100x120233`
-  )
-    .then(async response => {
-      const data = await response.json();
-      console.log(`You are in ${data.city}, ${data.country}.`);
-      return data;
-    })
-    .then(data => {
-      getCountryData(data.country);
-    })
-    .catch(err => {
-      console.error(err.message);
-      renderError('Something went wrong ' + err.message);
-    });
-};
+// const whereAmI = async function (param) {
+//   fetch(
+//     `https://geocode.xyz/${param}?geoit=json&auth=544732385110882337100x120233`
+//   )
+//     .then(async response => {
+//       const data = await response.json();
+//       console.log(`You are in ${data.city}, ${data.country}.`);
+//       return data;
+//     })
+//     .then(data => {
+//       getCountryData(data.country);
+//     })
+//     .catch(err => {
+//       console.error(err.message);
+//       renderError('Something went wrong ' + err.message);
+//     });
+// };
+
+////////////////////////////////////////
+// EVENT LOOP
+/*
+console.log('Test start'); // synchronous
+setTimeout(() => console.log('0 sec timer'), 0); // 0 timer but goes into callbak queue
+Promise.resolve('Resolved promise 1').then(res => console.log(res));// imediatly resolved and enters the promise(microtasks) queue (higher priority)
+Promise.resolve('Resolved promise 2').then(res => {
+  for(let i = 0; i < 100000000; i++) {};
+  console.log(res)}); //will tacke longer to complete and should have a visible delay on completion/m  also influences the callback queue
+
+console.log('Test end');// synchronous 2
+*/
+
+const  lotteryPromise = new Promise(function(resolve, reject){
+console.log('Lottery draw is happening!')
+  setTimeout(function() {
+    if(Math.random() >= 0.5) {
+      resolve('You win cash');
+    } else {
+      reject(new Error('Sorry, you lose'))
+    }
+  },2000)
+});
+lotteryPromise.then(res => console.log(res)).catch(err => console.error(err));
+
+// Promisifying setTimeout
+
+const wait = function(seconds) {
+  return new Promise(function(resolve) {
+    setTimeout(resolve, seconds *1000);
+  })
+}
+
+wait(1)
+  .then(() => {
+  console.log('1 second passed');
+  return wait(1);
+  })
+  .then(() => {
+    console.log('2 seconds passed')
+  })
+  .then(() => {
+    console.log('3 seconds passed')
+  })
+  .then(() => {
+    console.log('4 seconds passed')
+  });
+
+Promise.resolve('abc').then(x => console.log(x));
+Promise.reject(new Error('Problem!')).catch(x => console.error(x));
