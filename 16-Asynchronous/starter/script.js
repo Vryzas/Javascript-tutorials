@@ -297,7 +297,7 @@ console.log('Test end');// synchronous 2
 
 // console.log('Getting position');
 
-const getPosition = function() {
+/* const getPosition = function() {
   return new Promise(function(resolve, reject) {
     // navigator.geolocation.getCurrentPosition(
     //   position => resolve(position),
@@ -340,7 +340,7 @@ btn.forEach(btn => {
     whereAmI();
     countriesContainer.style.opacity = 1;
   });
-});
+}); */
 
 ////////////////CODE CHALLENGE 2///////////////////////////////////////
 
@@ -365,7 +365,7 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 
 GOOD LUCK 😀
 */
-
+/* 
 const wait = function(seconds) {
   return new Promise(function(resolve) {
     setTimeout(resolve, seconds *1000);
@@ -421,4 +421,33 @@ let currentImg;
   currentImg.style.display = 'none';
  })
  .catch( err => console.error(err));
+  */
+
+ ////////////////Async/Await Promises////////////////////
  
+ const getPosition = function() {
+  return new Promise(function(resolve, reject) {
+   navigator.geolocation.getCurrentPosition(resolve, reject );
+  });
+};
+
+ const whereAmI = async function(country) {
+  // Geolocate
+  const pos = await getPosition();
+  const {  latitude: lat, longitude: lng } = pos.coords;
+  // Reverse Geocoding
+  const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=544732385110882337100x120233`);
+  const dataGeo = await resGeo.json();
+  console.log(dataGeo);
+
+  // Country Data
+  // fetch(`https://restcountries.com/v2/name/${country}`).then(res => console.log(res));
+  const res = await fetch(
+    `https://restcountries.com/v2/name/${dataGeo.country}`);
+  const data = await res.json();
+  console.log(data);
+  renderCountry(data[0]);
+ }
+
+ whereAmI('portugal');
+ console.log('FIRST');
