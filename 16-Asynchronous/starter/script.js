@@ -448,13 +448,29 @@ let currentImg;
     if(!res.ok) throw new Error(`Problem getting country!`);
   const data = await res.json();
   renderCountry(data[0]);
+
+  return `You are in ${dataGeo.city}, ${dataGeo.country}.`
   } catch (err) {
     console.error(`${err} 🧨`);
     renderError(`💥 ${err.message}`);
+    // Reject the promise from async fn
+    throw err;
   }
  };
+console.log(`1: Will get location.`);
 
-whereAmI();
-
-console.log('FIRST'); 
- /////////////////ERROR HANDLING WITH TRY/CATCH//////////////
+/* OLD
+whereAmI()
+.then(city => console.log(`2: ${city}`))
+.catch(err => console.error(`2: ${err.message} 💥`))
+.finally( () => console.log(`3: Finished getting location.`));
+*/
+(async function () {
+  try{
+    const city  = await whereAmI();
+    console.log(`2: ${city}`)
+  } catch (err) {
+    console.error(`2: ${err.message} 💥`)
+  }
+  console.log(`3: Finished getting location.`)
+})();
