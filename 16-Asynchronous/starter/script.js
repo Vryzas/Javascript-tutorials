@@ -431,23 +431,30 @@ let currentImg;
   });
 };
 
- const whereAmI = async function(country) {
+
+ const whereAmI = async function() {
+  try{
   // Geolocate
   const pos = await getPosition();
   const {  latitude: lat, longitude: lng } = pos.coords;
   // Reverse Geocoding
   const resGeo = await fetch(`https://geocode.xyz/${lat},${lng}?geoit=json&auth=544732385110882337100x120233`);
+  if(!resGeo.ok) throw new Error(`Problem getting location!`);
   const dataGeo = await resGeo.json();
-  console.log(dataGeo);
 
   // Country Data
-  // fetch(`https://restcountries.com/v2/name/${country}`).then(res => console.log(res));
   const res = await fetch(
     `https://restcountries.com/v2/name/${dataGeo.country}`);
+    if(!res.ok) throw new Error(`Problem getting country!`);
   const data = await res.json();
-  console.log(data);
   renderCountry(data[0]);
- }
+  } catch (err) {
+    console.error(`${err} 🧨`);
+    renderError(`💥 ${err.message}`);
+  }
+ };
 
- whereAmI('portugal');
- console.log('FIRST');
+whereAmI();
+
+console.log('FIRST'); 
+ /////////////////ERROR HANDLING WITH TRY/CATCH//////////////
