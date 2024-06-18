@@ -2,13 +2,13 @@
 // Exporting and Importing in ES6 Modules
 
 // import { addToCart, totalPrice as price, qt } from './shoppingCart.js';
-// import * as ShoppingCart from './shoppingCart.js';
+import * as ShoppingCart from './shoppingCart.js';
 
 console.log('Importing module');
 
-// ShoppingCart.addToCart('bread', 5);
-// ShoppingCart.addToCart('apples', 10);
-// ShoppingCart.addToCart('pizzas', 2);
+ShoppingCart.addToCart('bread', 5);
+ShoppingCart.addToCart('apples', 10);
+ShoppingCart.addToCart('pizzas', 2);
 
 // console.log( `Total of ${ShoppingCart.price}€ for ${ShoppingCart.qt} items`);
 // console.log( `Total of ${ShoppingCart.totalPrice}€ for ${ShoppingCart.qt} items`);
@@ -16,7 +16,7 @@ console.log('Importing module');
 // import theDefault from './shoppingCart.js';
 
 // theDefault();
-// console.log(ShoppingCart.cart)
+console.log(ShoppingCart.cart)
 ///////////////////////////////////////
 // Top-level await
 
@@ -101,3 +101,16 @@ const stateDeepClone =  cloneDeep(state);
 console.log(stateDeepClone);
 
 state.user.loggedIn = false;
+
+//  CMD examples for parcel usage
+// npm i parcel --save-dev
+// 
+// npx parcel index.html
+// parcel build index.html
+// remove main from package.json
+
+console.log(ShoppingCart.cart.find(el => el.quantity >= 2));
+
+import 'core-js/actual';
+
+import 'regenerator-runtime/runtime'
