@@ -41,7 +41,7 @@ console.log('Importing module');
 
 ///////////////////////////////////////
 // The Module Pattern
-
+/*
 const ShoppingCart2 = (function () {
     const cart = [];
     const shippingCost = 10;
@@ -70,3 +70,34 @@ ShoppingCart2.addToCart('banana', 2);
 console.log(ShoppingCart2);
 // shippingCost is "private" so it should return undefined
 console.log(ShoppingCart2.shippingCost)
+*/
+
+// /////////////////////////////
+// // Common.js import/export
+
+// // Onmodule -> Export
+// export.addToCart = function (product, quantity) {
+//     cart.push({ product, quantity });
+//     console.log(`${quantity} ${product} added to cart (shipping cost is ${shippingCost})`);
+// };
+
+// // On main -> Import
+// const { addToCart } = require('./shoppingCart.js');
+
+import cloneDeep from './node_modules/lodash-es/cloneDeep.js'
+
+const state = {
+    cart: [
+        { product: 'bread', quantity: 5 },
+        { product: 'milk', quantity: 2 },
+    ],
+    user: { loggedIn: true },
+};
+
+const stateClone = Object.assign({}, state);
+console.log(stateClone);
+
+const stateDeepClone =  cloneDeep(state);
+console.log(stateDeepClone);
+
+state.user.loggedIn = false;
