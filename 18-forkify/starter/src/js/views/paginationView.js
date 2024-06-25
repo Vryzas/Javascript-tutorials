@@ -19,7 +19,6 @@ class PaginationView extends View {
     const numPages = Math.ceil(
       this._data.results.length / this._data.resultsPerPage
     );
-    console.log(numPages);
     // page 1 and + pages
     if (curPage === 1 && numPages > 1) {
       return btnMarkup(curPage + 1, 'next', 'right');
