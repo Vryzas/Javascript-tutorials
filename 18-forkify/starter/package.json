@@ -4,7 +4,7 @@
   "description": "recipe aquisition app",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --dist-dir ./dist",
     "test": "node index.js"
   },
   "keywords": [
